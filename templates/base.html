@@ -1,0 +1,75 @@
+{{define "base-home"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{template "home-title" .}}</title>
+<meta name="description" content="250 open-source apps deployed on Nexlayer, scored and ranked by engineering quality, scalability, security, and real-world deployability.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <span class="logo-icon">🇺🇸</span>
+      <span class="logo-text">America<span class="logo-accent">250</span></span>
+      <span class="logo-sub">OSS Challenge</span>
+    </a>
+    <nav class="header-nav">
+      <a href="/?sort=score" class="nav-link">Leaderboard</a>
+      <a href="/?sort=num" class="nav-link">By Number</a>
+      <a href="/api/apps" class="nav-link" target="_blank">API</a>
+    </nav>
+  </div>
+</header>
+<main>{{template "home-content" .}}</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>250 open-source apps · Deployed on <a href="https://nexlayer.com" target="_blank" rel="noopener">Nexlayer</a></span>
+    <span class="footer-right">Scores based on scalability, security, engineering quality &amp; more</span>
+  </div>
+</footer>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
+{{end}}
+
+{{define "base-detail"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{template "detail-title" .}}</title>
+<meta name="description" content="250 open-source apps deployed on Nexlayer, scored and ranked by engineering quality, scalability, security, and real-world deployability.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <span class="logo-icon">🇺🇸</span>
+      <span class="logo-text">America<span class="logo-accent">250</span></span>
+      <span class="logo-sub">OSS Challenge</span>
+    </a>
+    <nav class="header-nav">
+      <a href="/?sort=score" class="nav-link">Leaderboard</a>
+      <a href="/?sort=num" class="nav-link">By Number</a>
+      <a href="/api/apps" class="nav-link" target="_blank">API</a>
+    </nav>
+  </div>
+</header>
+<main>{{template "detail-content" .}}</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>250 open-source apps · Deployed on <a href="https://nexlayer.com" target="_blank" rel="noopener">Nexlayer</a></span>
+    <span class="footer-right">Scores based on scalability, security, engineering quality &amp; more</span>
+  </div>
+</footer>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
+{{end}}

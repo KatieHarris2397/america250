@@ -1,0 +1,85 @@
+{{define "home-title"}}America 250 — OSS App Leaderboard{{end}}
+{{define "home-content"}}
+<div class="page-home">
+  <div class="hero">
+    <h1 class="hero-title">250 Open Source Apps<br><span class="hero-accent">Ranked & Scored</span></h1>
+    <p class="hero-sub">Every app from the #250apps challenge, rated on scalability, security, engineering quality, and real-world deployability on Nexlayer.</p>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <input type="text" id="search" class="search-input" placeholder="Search apps..." value="{{.Filter}}" autocomplete="off">
+      <span class="search-icon">⌕</span>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Sort:</span>
+      <div class="btn-group" id="sort-btns">
+        <a href="/?sort=score{{if .Filter}}&q={{.Filter}}{{end}}{{if .GradeFilter}}&grade={{.GradeFilter}}{{end}}" class="btn-filter {{if eq .Sort "score"}}active{{end}}">By Score</a>
+        <a href="/?sort=num{{if .Filter}}&q={{.Filter}}{{end}}{{if .GradeFilter}}&grade={{.GradeFilter}}{{end}}" class="btn-filter {{if eq .Sort "num"}}active{{end}}"># Order</a>
+        <a href="/?sort=name{{if .Filter}}&q={{.Filter}}{{end}}{{if .GradeFilter}}&grade={{.GradeFilter}}{{end}}" class="btn-filter {{if eq .Sort "name"}}active{{end}}">A–Z</a>
+        <a href="/?sort=cost{{if .Filter}}&q={{.Filter}}{{end}}{{if .GradeFilter}}&grade={{.GradeFilter}}{{end}}" class="btn-filter {{if eq .Sort "cost"}}active{{end}}">$ Value</a>
+      </div>
+
+      <span class="filter-label">Grade:</span>
+      <div class="btn-group">
+        <a href="/?sort={{.Sort}}{{if .Filter}}&q={{.Filter}}{{end}}" class="btn-filter {{if not .GradeFilter}}active{{end}}">All</a>
+        {{range .Grades}}
+        <a href="/?sort={{$.Sort}}{{if $.Filter}}&q={{$.Filter}}{{end}}&grade={{.}}" class="btn-filter grade-btn {{if eq . $.GradeFilter}}active{{end}}">{{.}}</a>
+        {{end}}
+      </div>
+    </div>
+
+    {{if .Categories}}
+    <div class="category-chips">
+      <a href="/?sort={{.Sort}}{{if .Filter}}&q={{.Filter}}{{end}}{{if .GradeFilter}}&grade={{.GradeFilter}}{{end}}" class="chip {{if not .Filter}}chip-active{{end}}">All Categories</a>
+      {{range .Categories}}
+      <a href="/?sort={{$.Sort}}&cat={{.}}{{if $.GradeFilter}}&grade={{$.GradeFilter}}{{end}}" class="chip">{{.}}</a>
+      {{end}}
+    </div>
+    {{end}}
+  </div>
+
+  <div class="result-count">
+    <span id="visible-count">{{.TotalCount}}</span> apps
+    {{if .Filter}}<span class="filter-tag">Search: "{{.Filter}}" <a href="/?sort={{.Sort}}{{if .GradeFilter}}&grade={{.GradeFilter}}{{end}}" class="clear-x">×</a></span>{{end}}
+    {{if .GradeFilter}}<span class="filter-tag">Grade: {{.GradeFilter}} <a href="/?sort={{.Sort}}{{if .Filter}}&q={{.Filter}}{{end}}" class="clear-x">×</a></span>{{end}}
+  </div>
+
+  <div class="app-grid" id="app-grid">
+    {{range .Apps}}
+    <a href="/app/{{.Num}}" class="app-card" data-name="{{lower .Name}}" data-category="{{lower .Category}}" data-grade="{{.Grade}}">
+      <div class="card-img-wrap">
+        <img class="card-img" src="/screenshots/{{.Folder}}" alt="{{.Name}} screenshot" loading="lazy">
+        <div class="card-badges">
+          <span class="badge-num">#{{.Num}}</span>
+          <span class="badge-grade" style="--grade-color:{{gradeColor .Grade}}">{{.Grade}}</span>
+        </div>
+        <div class="card-score-bar">
+          <div class="score-fill" style="width:{{formatScore .TotalScore}}%"></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-title-row">
+          <h3 class="card-title">{{.Name}}</h3>
+          <span class="card-score" style="color:{{gradeColor .Grade}}">{{formatScore .TotalScore}}</span>
+        </div>
+        <span class="card-category">{{.Category}}</span>
+        <p class="card-blurb">{{.Blurb}}</p>
+        <div class="card-meta">
+          <span class="meta-lang">{{.MainLanguage}}</span>
+          <span class="meta-complexity complexity-{{lower .DeploymentComplexity}}">{{.DeploymentComplexity}}</span>
+          {{if .MonthlyEquivCost}}<span class="meta-cost">${{.MonthlyEquivCost}}/mo equiv</span>{{end}}
+        </div>
+      </div>
+    </a>
+    {{end}}
+
+    {{if not .Apps}}
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <p>No apps match your filters. <a href="/">Clear filters</a></p>
+    </div>
+    {{end}}
+  </div>
+</div>
+{{end}}

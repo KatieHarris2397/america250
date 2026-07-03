@@ -1,0 +1,111 @@
+{{define "detail-title"}}#{{.App.Num}} {{.App.Name}} — America 250{{end}}
+{{define "detail-content"}}
+<div class="page-detail">
+  <div class="detail-nav">
+    <a href="/" class="back-link">← All Apps</a>
+    <div class="detail-nav-adj">
+      {{if .Prev}}<a href="/app/{{.Prev.Num}}" class="adj-link adj-prev" title="{{.Prev.Name}}">↑ Higher ranked</a>{{end}}
+      {{if .Next}}<a href="/app/{{.Next.Num}}" class="adj-link adj-next" title="{{.Next.Name}}">↓ Lower ranked</a>{{end}}
+    </div>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-img-wrap">
+      <img class="detail-img" src="/screenshots/{{.App.Folder}}" alt="{{.App.Name}} screenshot">
+    </div>
+    <div class="detail-header">
+      <div class="detail-badges">
+        <span class="badge-num-lg">#{{.App.Num}}</span>
+        <span class="badge-grade-lg" style="--grade-color:{{gradeColor .App.Grade}}">{{.App.Grade}}</span>
+        <span class="badge-rank">Rank #{{.App.RankPosition}}</span>
+      </div>
+      <h1 class="detail-title">{{.App.Name}}</h1>
+      <p class="detail-blurb">{{.App.Blurb}}</p>
+      <div class="detail-meta">
+        <span class="meta-pill">{{.App.Category}}</span>
+        <span class="meta-pill">{{.App.MainLanguage}}</span>
+        <span class="meta-pill complexity-{{lower .App.DeploymentComplexity}}">{{.App.DeploymentComplexity}} to deploy</span>
+        {{if .App.MonthlyEquivCost}}<span class="meta-pill meta-cost-pill">${{.App.MonthlyEquivCost}}/mo equiv</span>{{end}}
+      </div>
+      <div class="detail-links">
+        {{if .App.GithubURL}}<a href="{{.App.GithubURL}}" target="_blank" rel="noopener" class="detail-link">GitHub →</a>{{end}}
+        {{if .App.LinkedinURL}}<a href="{{.App.LinkedinURL}}" target="_blank" rel="noopener" class="detail-link">LinkedIn Post →</a>{{end}}
+        {{if .App.LiveURL}}<a href="{{.App.LiveURL}}" target="_blank" rel="noopener" class="detail-link detail-link-live">Live Demo →</a>{{end}}
+      </div>
+
+      <div class="total-score-display">
+        <div class="total-score-ring">
+          <svg viewBox="0 0 100 100" class="score-ring-svg">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1e1e2e" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="{{gradeColor .App.Grade}}" stroke-width="10"
+              stroke-dasharray="{{printf "%.1f" (scoreDash .App.TotalScore)}}, 263.9"
+              stroke-dashoffset="66"
+              stroke-linecap="round"/>
+          </svg>
+          <div class="score-ring-val">
+            <span class="score-num">{{formatScore .App.TotalScore}}</span>
+            <span class="score-label">/ 100</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-main">
+
+      {{if .App.StackDescription}}
+      <section class="detail-section">
+        <h2 class="section-title">⚙ Full Stack</h2>
+        <div class="section-body prose">{{.App.StackDescription}}</div>
+      </section>
+      {{end}}
+
+      {{if .App.ScalingAnalysis}}
+      <section class="detail-section">
+        <h2 class="section-title">📈 Scaling Analysis</h2>
+        <div class="section-body prose">{{.App.ScalingAnalysis}}</div>
+      </section>
+      {{end}}
+
+      {{if .App.NexlayerNotes}}
+      <section class="detail-section">
+        <h2 class="section-title">🚀 Running on Nexlayer</h2>
+        <div class="section-body prose">{{.App.NexlayerNotes}}</div>
+      </section>
+      {{end}}
+
+    </div>
+
+    <aside class="detail-sidebar">
+      <div class="score-breakdown-card">
+        <h3 class="sidebar-title">Score Breakdown</h3>
+        {{range .Scores}}
+        <div class="score-row">
+          <div class="score-row-header">
+            <span class="score-dim-label">{{.Label}}</span>
+            <span class="score-dim-val" style="color:{{scoreColor .Score}}">{{formatScore .Score}}</span>
+          </div>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill" style="width:{{.Pct}}%; background:{{scoreColor .Score}}"></div>
+          </div>
+          <span class="score-weight">{{.Weight}}% weight</span>
+        </div>
+        {{end}}
+      </div>
+
+      <div class="sidebar-card">
+        <h3 class="sidebar-title">Quick Stats</h3>
+        <dl class="stat-list">
+          <dt>Grade</dt><dd style="color:{{gradeColor .App.Grade}}; font-weight:700">{{.App.Grade}}</dd>
+          <dt>Overall Score</dt><dd>{{formatScore .App.TotalScore}} / 100</dd>
+          <dt>Category</dt><dd>{{.App.Category}}</dd>
+          <dt>Primary Language</dt><dd>{{.App.MainLanguage}}</dd>
+          <dt>Deploy Complexity</dt><dd class="complexity-{{lower .App.DeploymentComplexity}}">{{.App.DeploymentComplexity}}</dd>
+          {{if .App.MonthlyEquivCost}}<dt>Equiv. SaaS Cost</dt><dd>${{.App.MonthlyEquivCost}}/month</dd>{{end}}
+        </dl>
+      </div>
+    </aside>
+  </div>
+</div>
+{{end}}
