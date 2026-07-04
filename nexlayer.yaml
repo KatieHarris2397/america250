@@ -8,12 +8,7 @@ application:
     - 8080
     vars:
       DATABASE_URL: "postgres://postgres:postgres@postgres.pod:5432/america250?sslmode=disable"
-      SCREENSHOTS_DIR: "/screenshots"
       BIND_ADDR: ":8080"
-    volumes:
-    - name: america250-screenshots
-      mountPath: /screenshots
-      size: 10Gi
   - name: postgres
     image: mirror.gcr.io/library/postgres:16-alpine
     servicePorts:
