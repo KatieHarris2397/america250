@@ -52,6 +52,9 @@ var folderOverrides = map[int]string{}
 // LinkedIn URLs from published log (num → url)
 var linkedinURLs = map[int]string{}
 
+// GitHub fork URLs (num -> url), loaded from github-urls.json if present
+var githubURLs = map[int]string{}
+
 func computeTotal(a AppScore) float64 {
 	return a.Scalability*2.0 +
 		a.ClientServer*1.5 +
@@ -106,6 +109,22 @@ func main() {
 		tsvData, err := os.ReadFile(os.Args[2])
 		if err == nil {
 			parseOverrides(string(tsvData))
+		}
+	}
+
+	// Load GitHub fork URLs if provided (defaults to github-urls.json next to this binary's cwd)
+	githubURLsPath := "github-urls.json"
+	if len(os.Args) >= 4 {
+		githubURLsPath = os.Args[3]
+	}
+	if ghData, err := os.ReadFile(githubURLsPath); err == nil {
+		var raw map[string]string
+		if err := json.Unmarshal(ghData, &raw); err == nil {
+			for k, v := range raw {
+				if n, err := strconv.Atoi(k); err == nil {
+					githubURLs[n] = v
+				}
+			}
 		}
 	}
 
@@ -187,17 +206,20 @@ func main() {
 	inserted, updated := 0, 0
 	for _, a := range apps {
 		linkedinURL := linkedinURLs[a.Num]
+		githubURL := githubURLs[a.Num]
 		_, err := db.Exec(`
-			INSERT INTO apps (num, name, folder, category, main_language, linkedin_url, blurb,
+			INSERT INTO apps (num, name, folder, category, main_language, github_url, linkedin_url, blurb,
 				score_scalability, score_client_server, score_data_safety, score_container, score_security,
 				score_local_testability, score_cost, score_issues, score_engineering, score_commercial_value,
 				total_score, grade, rank_position,
 				stack_description, nexlayer_notes, scaling_analysis,
 				deployment_complexity, monthly_equivalent_cost, improvement_note)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27)
 			ON CONFLICT (num) DO UPDATE SET
 				name=EXCLUDED.name, folder=EXCLUDED.folder, category=EXCLUDED.category,
-				main_language=EXCLUDED.main_language, linkedin_url=COALESCE(NULLIF(EXCLUDED.linkedin_url,''), apps.linkedin_url),
+				main_language=EXCLUDED.main_language,
+				github_url=COALESCE(NULLIF(EXCLUDED.github_url,''), apps.github_url),
+				linkedin_url=COALESCE(NULLIF(EXCLUDED.linkedin_url,''), apps.linkedin_url),
 				blurb=EXCLUDED.blurb,
 				score_scalability=EXCLUDED.score_scalability, score_client_server=EXCLUDED.score_client_server,
 				score_data_safety=EXCLUDED.score_data_safety, score_container=EXCLUDED.score_container,
@@ -209,7 +231,7 @@ func main() {
 				scaling_analysis=EXCLUDED.scaling_analysis,
 				deployment_complexity=EXCLUDED.deployment_complexity, monthly_equivalent_cost=EXCLUDED.monthly_equivalent_cost,
 				improvement_note=EXCLUDED.improvement_note`,
-			a.Num, a.Name, a.Folder, a.Category, a.MainLanguage, linkedinURL, a.Blurb,
+			a.Num, a.Name, a.Folder, a.Category, a.MainLanguage, githubURL, linkedinURL, a.Blurb,
 			a.Scalability, a.ClientServer, a.DataSafety, a.Container, a.Security,
 			a.LocalTestability, a.Cost, a.Issues, a.Engineering, a.CommercialValue,
 			a.TotalScore, a.Grade, rankMap[a.Num],
