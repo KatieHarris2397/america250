@@ -2,3 +2,7 @@ america250
 *.test
 *.out
 /tmp/
+
+# macOS AppleDouble metadata files (created on non-HFS volumes)
+._*
+.DS_Store
