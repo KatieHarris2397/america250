@@ -2,7 +2,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #082a33;
+  --bg: #22e022;
   --bg2: #111113;
   --bg3: #18181b;
   --bg4: #27272a;
@@ -38,7 +38,7 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(8,42,51,0.92);
+  background: rgba(34,224,34,0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -356,7 +356,7 @@ img { max-width: 100%; display: block; }
   align-items: flex-start;
 }
 .badge-num {
-  background: rgba(8,42,51,0.85);
+  background: rgba(34,224,34,0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border2);
@@ -368,7 +368,7 @@ img { max-width: 100%; display: block; }
   font-family: 'SF Mono', 'Fira Code', monospace;
 }
 .badge-grade {
-  background: rgba(8,42,51,0.85);
+  background: rgba(34,224,34,0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--grade-color, #666);
@@ -381,7 +381,7 @@ img { max-width: 100%; display: block; }
 }
 
 .badge-needs-improvement {
-  background: rgba(8,42,51,0.85);
+  background: rgba(34,224,34,0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid #e63946;
