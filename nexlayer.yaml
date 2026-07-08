@@ -14,9 +14,9 @@ application:
       servicePorts:
         - 5432
       vars:
-        POSTGRES_USER: app
+        POSTGRES_USER: america
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_DB: "app"
+        POSTGRES_DB: "america250"
       volumes:
         - name: america250-postgres-data
           size: 10Gi
